@@ -7,3 +7,6 @@ playwright/.cache/
 .env.local
 *.log
 .DS_Store
+
+# Local-only notes / course — not published
+docs/cours.md
