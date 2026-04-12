@@ -91,6 +91,29 @@ export class ParabankPage {
   }
 
   /**
+   * Reads all account balances from a single overview page visit.
+   * Returns a Map<accountId, balance>. Prefer this when you need more
+   * than one balance — two concurrent page.goto calls on the same page
+   * abort each other (net::ERR_ABORTED).
+   */
+  async getAllBalancesFromOverview(): Promise<Map<string, number>> {
+    await this.page.goto('/parabank/overview.htm');
+    const rows = this.page.locator('#accountTable tbody tr');
+    await expect(rows.first()).toBeVisible();
+    const count = await rows.count();
+    const balances = new Map<string, number>();
+    for (let i = 0; i < count; i++) {
+      const row = rows.nth(i);
+      const idText = (await row.locator('td').nth(0).innerText()).trim();
+      const balanceText = (await row.locator('td').nth(1).innerText()).trim();
+      if (/^\d+$/.test(idText)) {
+        balances.set(idText, Number(balanceText.replace(/[$,\s]/g, '')));
+      }
+    }
+    return balances;
+  }
+
+  /**
    * Re-reads the overview page and returns the balance for a given account id.
    * Parses the ParaBank "$1,234.56" format into a number.
    */

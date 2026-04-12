@@ -103,6 +103,8 @@ parabank-playwright-exercise/
 
 - [`docs/exploration-notes.md`](docs/exploration-notes.md) — what the site actually does: URLs, forms, APIs, quirks observed during manual exploration.
 - [`docs/test-plan.md`](docs/test-plan.md) — FMEA-light risk matrix (Probability × Impact × Detectability), test cases, traceability, anti-flaky strategy.
+- [`docs/patterns.md`](docs/patterns.md) — catalog of the Playwright / deterministic patterns used in the suite, with "where and why".
+- [`docs/work-log.md`](docs/work-log.md) — decision log: what was built, what was decided, and every issue encountered with its fix.
 
 Read both before writing new tests — they explain **why** each scenario matters and **how** to keep the suite deterministic on a shared public environment.
 
@@ -116,6 +118,8 @@ Read both before writing new tests — they explain **why** each scenario matter
 | TC-02 | Login happy path + logout      | P0       | `tests/login.spec.ts`       | ✅     |
 | TC-03 | Login with invalid credentials | P1       | `tests/login.spec.ts`       | ✅     |
 | TC-04 | Transfer funds between accounts| P0       | `tests/transfer.spec.ts`    | ✅     |
+| TC-08 | Double-submit transfer (pinned)| P0       | `tests/transfer-double-submit.spec.ts` | ⚠️ pinned bug |
+| TC-09 | Full banking journey           | P1       | `tests/journey.spec.ts`     | ✅     |
 | TC-05 | Bill Pay end-to-end            | P1       | —                           | 🎯 V2  |
 | TC-06 | Request Loan                   | P1       | —                           | 🎯 V2  |
 | TC-07 | Find Transactions by date      | P2       | —                           | 🎯 V2  |
