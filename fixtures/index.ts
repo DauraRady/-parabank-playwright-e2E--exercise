@@ -19,11 +19,9 @@ export const test = base.extend<Fixtures>({
     const pom = new ParabankPage(page);
     await pom.register(user);
     await use(user);
-    // No teardown: ParaBank doesn't expose a delete-user endpoint.
   },
 
   authedPage: async ({ parabank, registeredUser }, use) => {
-    // The register() flow auto-logs the user in, so we're already authenticated.
     await expect(parabank.loggedInHeading()).toBeVisible();
     await use(parabank);
   },

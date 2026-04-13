@@ -14,7 +14,6 @@ export class ParabankPage {
 
   async register(user: NewUser) {
     await this.goRegister();
-    // Labels aren't associated via <label for>, so we target by stable id.
     await this.page.locator('#customer\\.firstName').fill(user.firstName);
     await this.page.locator('#customer\\.lastName').fill(user.lastName);
     await this.page.locator('#customer\\.address\\.street').fill(user.address);
@@ -27,9 +26,6 @@ export class ParabankPage {
     await this.page.locator('#customer\\.password').fill(user.password);
     await this.page.locator('#repeatedPassword').fill(user.password);
     await this.page.locator('input[type="submit"][value="Register"]').click();
-    // ParaBank doesn't redirect after register — it re-renders register.htm with a
-    // success message. Wait for that, then navigate to overview explicitly so every
-    // caller starts from the same known state.
     await this.page.getByText(/your account was created successfully/i).waitFor();
     await this.page.goto('/parabank/overview.htm');
   }
@@ -58,10 +54,6 @@ export class ParabankPage {
     return this.page.getByText(/could not be verified/i);
   }
 
-  /**
-   * Returns the list of account IDs visible on the overview page.
-   * ParaBank renders each account ID as a link in the first column.
-   */
   async accountIdsFromOverview(): Promise<string[]> {
     await this.page.goto('/parabank/overview.htm');
     const rows = this.page.locator('#accountTable tbody tr');
@@ -78,7 +70,7 @@ export class ParabankPage {
 
   async openNewCheckingAccount(fromAccountId: string): Promise<string> {
     await this.page.goto('/parabank/openaccount.htm');
-    await this.page.locator('#type').selectOption('0'); // CHECKING
+    await this.page.locator('#type').selectOption('0');
     await this.page.locator('#fromAccountId').selectOption(fromAccountId);
     await this.page.getByRole('button', { name: /open new account/i }).click();
     const newAccountLink = this.page.locator('#newAccountId');
@@ -86,12 +78,6 @@ export class ParabankPage {
     return (await newAccountLink.innerText()).trim();
   }
 
-  /**
-   * Reads all account balances from a single overview page visit.
-   * Returns a Map<accountId, balance>. Prefer this when you need more
-   * than one balance — two concurrent page.goto calls on the same page
-   * abort each other (net::ERR_ABORTED).
-   */
   async getAllBalancesFromOverview(): Promise<Map<string, number>> {
     await this.page.goto('/parabank/overview.htm');
     const rows = this.page.locator('#accountTable tbody tr');
@@ -109,10 +95,6 @@ export class ParabankPage {
     return balances;
   }
 
-  /**
-   * Re-reads the overview page and returns the balance for a given account id.
-   * Parses the ParaBank "$1,234.56" format into a number.
-   */
   async getBalanceFromOverview(accountId: string): Promise<number> {
     await this.page.goto('/parabank/overview.htm');
     const row = this.page.locator('#accountTable tbody tr', {
