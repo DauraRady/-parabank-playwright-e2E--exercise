@@ -1,4 +1,4 @@
-import { test, expect } from '../helpers/fixtures';
+import { test, expect } from '../fixtures';
 
 test.describe('TC-04 — Transfer funds (UI balance cross-check)', () => {
   test('debits the source and credits the destination by the exact amount', async ({

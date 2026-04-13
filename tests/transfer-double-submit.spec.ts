@@ -1,4 +1,4 @@
-import { test, expect } from '../helpers/fixtures';
+import { test, expect } from '../fixtures';
 
 /**
  * TC-08 — Double-submit transfer (risk R3)

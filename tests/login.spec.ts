@@ -1,4 +1,4 @@
-import { test, expect } from '../helpers/fixtures';
+import { test, expect } from '../fixtures';
 import { ParabankPage } from '../helpers/parabankPage';
 
 test.describe('TC-02 — Login / logout happy path', () => {
