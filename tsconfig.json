@@ -10,5 +10,5 @@
     "forceConsistentCasingInFileNames": true,
     "types": ["node"]
   },
-  "include": ["tests/**/*.ts", "helpers/**/*.ts", "fixtures/**/*.ts", "global-setup.ts", "playwright.config.ts"]
+  "include": ["tests/**/*.ts", "helpers/**/*.ts", "fixtures/**/*.ts", "pages/**/*.ts", "global-setup.ts", "playwright.config.ts"]
 }
