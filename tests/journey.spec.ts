@@ -1,6 +1,6 @@
 import { test, expect } from '../fixtures';
 import { newUser } from '../helpers/userFactory';
-import { ParabankPage } from '../helpers/parabankPage';
+import { ParabankPage } from '../pages/parabankPage';
 
 /**
  * TC-09 — Full banking journey

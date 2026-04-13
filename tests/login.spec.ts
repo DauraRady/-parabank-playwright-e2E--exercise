@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures';
-import { ParabankPage } from '../helpers/parabankPage';
+import { ParabankPage } from '../pages/parabankPage';
 
 test.describe('TC-02 — Login / logout happy path', () => {
   test('a registered user can log out and log back in', async ({
