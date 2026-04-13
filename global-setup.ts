@@ -1,9 +1,5 @@
 import { request } from '@playwright/test';
 
-/**
- * Health check on the public ParaBank instance with a small retry loop.
- * Kept minimal and idempotent — no background processes, no seeding.
- */
 export default async function globalSetup() {
   const ctx = await request.newContext({ baseURL: 'https://parabank.parasoft.com' });
   const maxAttempts = 10;
@@ -15,9 +11,7 @@ export default async function globalSetup() {
         await ctx.dispose();
         return;
       }
-    } catch {
-      // fall through to retry
-    }
+    } catch {}
     await new Promise((r) => setTimeout(r, 500));
   }
 

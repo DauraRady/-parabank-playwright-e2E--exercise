@@ -2,19 +2,6 @@ import { test, expect } from '../fixtures';
 import { newUser } from '../helpers/userFactory';
 import { ParabankPage } from '../pages/parabankPage';
 
-/**
- * TC-09 — Full banking journey
- *
- * A long-running end-to-end happy path that chains the main customer
- * actions in a single test, instrumented with test.step so each phase
- * shows up as a collapsible section in the HTML report.
- *
- * Patterns demonstrated:
- *   - test.step for readable multi-phase tests
- *   - expect.poll for eventual-consistency on the transaction history
- *   - Promise.all for parallel balance reads
- *   - full journey coverage (Register → Open → Transfer → History)
- */
 test.describe('TC-09 — Full banking journey', () => {
   test('register, open account, transfer funds, find the transaction in history', async ({
     page,
@@ -61,10 +48,6 @@ test.describe('TC-09 — Full banking journey', () => {
     await test.step(
       'Poll the transactions REST endpoint until the transfer appears',
       async () => {
-        // Demonstrates expect.poll for eventual consistency. ParaBank is
-        // synchronous in practice, but this is the canonical pattern for
-        // webhook-driven state or async pipelines.
-        // The endpoint is the one the UI itself uses via jQuery AJAX.
         const url =
           `/parabank/services_proxy/bank/accounts/${sourceAccountId}` +
           `/transactions/month/All/type/Debit`;
