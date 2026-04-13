@@ -1,4 +1,4 @@
-import { test, expect } from '../helpers/fixtures';
+import { test, expect } from '../fixtures';
 import { newUser } from '../helpers/userFactory';
 import { ParabankPage } from '../helpers/parabankPage';
 

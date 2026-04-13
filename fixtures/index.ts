@@ -1,6 +1,6 @@
 import { test as base, APIRequestContext, request } from '@playwright/test';
-import { ParabankPage } from './parabankPage';
-import { newUser, NewUser } from './userFactory';
+import { ParabankPage } from '../helpers/parabankPage';
+import { newUser, NewUser } from '../helpers/userFactory';
 
 type Fixtures = {
   parabank: ParabankPage;
