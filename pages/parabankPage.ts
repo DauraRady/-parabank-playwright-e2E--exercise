@@ -1,4 +1,4 @@
-import { Page, expect } from '@playwright/test';
+import { Page, Locator } from '@playwright/test';
 import { NewUser } from '../helpers/userFactory';
 
 export class ParabankPage {
@@ -30,9 +30,7 @@ export class ParabankPage {
     // ParaBank doesn't redirect after register — it re-renders register.htm with a
     // success message. Wait for that, then navigate to overview explicitly so every
     // caller starts from the same known state.
-    await expect(
-      this.page.getByText(/your account was created successfully/i),
-    ).toBeVisible();
+    await this.page.getByText(/your account was created successfully/i).waitFor();
     await this.page.goto('/parabank/overview.htm');
   }
 
@@ -48,18 +46,16 @@ export class ParabankPage {
     await this.page.waitForURL(/index\.htm/);
   }
 
-  async expectLoggedIn() {
-    await expect(this.page).toHaveURL(/overview\.htm/);
-    await expect(this.page.getByRole('heading', { name: /accounts overview/i })).toBeVisible();
+  loggedInHeading(): Locator {
+    return this.page.getByRole('heading', { name: /accounts overview/i });
   }
 
-  async expectLoggedOut() {
-    await expect(this.page).toHaveURL(/index\.htm/);
-    await expect(this.page.getByRole('heading', { name: /customer login/i })).toBeVisible();
+  loginHeading(): Locator {
+    return this.page.getByRole('heading', { name: /customer login/i });
   }
 
-  async expectLoginError() {
-    await expect(this.page.getByText(/could not be verified/i)).toBeVisible();
+  loginError(): Locator {
+    return this.page.getByText(/could not be verified/i);
   }
 
   /**
@@ -69,7 +65,7 @@ export class ParabankPage {
   async accountIdsFromOverview(): Promise<string[]> {
     await this.page.goto('/parabank/overview.htm');
     const rows = this.page.locator('#accountTable tbody tr');
-    await expect(rows.first()).toBeVisible();
+    await rows.first().waitFor();
     const links = rows.locator('td').first().locator('a');
     const count = await links.count();
     const ids: string[] = [];
@@ -86,7 +82,7 @@ export class ParabankPage {
     await this.page.locator('#fromAccountId').selectOption(fromAccountId);
     await this.page.getByRole('button', { name: /open new account/i }).click();
     const newAccountLink = this.page.locator('#newAccountId');
-    await expect(newAccountLink).toBeVisible();
+    await newAccountLink.waitFor();
     return (await newAccountLink.innerText()).trim();
   }
 
@@ -99,7 +95,7 @@ export class ParabankPage {
   async getAllBalancesFromOverview(): Promise<Map<string, number>> {
     await this.page.goto('/parabank/overview.htm');
     const rows = this.page.locator('#accountTable tbody tr');
-    await expect(rows.first()).toBeVisible();
+    await rows.first().waitFor();
     const count = await rows.count();
     const balances = new Map<string, number>();
     for (let i = 0; i < count; i++) {
@@ -122,7 +118,7 @@ export class ParabankPage {
     const row = this.page.locator('#accountTable tbody tr', {
       has: this.page.locator(`a:has-text("${accountId}")`),
     });
-    await expect(row).toBeVisible();
+    await row.waitFor();
     const balanceText = (await row.locator('td').nth(1).innerText()).trim();
     return Number(balanceText.replace(/[$,\s]/g, ''));
   }
@@ -133,6 +129,6 @@ export class ParabankPage {
     await this.page.locator('#fromAccountId').selectOption(fromAccountId);
     await this.page.locator('#toAccountId').selectOption(toAccountId);
     await this.page.getByRole('button', { name: /transfer/i }).click();
-    await expect(this.page.getByRole('heading', { name: /transfer complete/i })).toBeVisible();
+    await this.page.getByRole('heading', { name: /transfer complete/i }).waitFor();
   }
 }
