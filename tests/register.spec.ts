@@ -1,6 +1,6 @@
 import { test, expect } from '../fixtures';
 import { newUser } from '../helpers/userFactory';
-import { ParabankPage } from '../helpers/parabankPage';
+import { ParabankPage } from '../pages/parabankPage';
 
 test.describe('TC-01 — Register', () => {
   test('registers a new user and lands on the accounts overview', async ({ page }) => {

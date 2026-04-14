@@ -1,5 +1,5 @@
 import { Page, expect } from '@playwright/test';
-import { NewUser } from './userFactory';
+import { NewUser } from '../helpers/userFactory';
 
 export class ParabankPage {
   constructor(private readonly page: Page) {}
