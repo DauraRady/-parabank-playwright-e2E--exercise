@@ -1,4 +1,4 @@
-import { test as base, APIRequestContext, request } from '@playwright/test';
+import { test as base, APIRequestContext, request, expect } from '@playwright/test';
 import { ParabankPage } from '../pages/parabankPage';
 import { newUser, NewUser } from '../helpers/userFactory';
 
@@ -24,7 +24,7 @@ export const test = base.extend<Fixtures>({
 
   authedPage: async ({ parabank, registeredUser }, use) => {
     // The register() flow auto-logs the user in, so we're already authenticated.
-    await parabank.expectLoggedIn();
+    await expect(parabank.loggedInHeading()).toBeVisible();
     await use(parabank);
   },
 

@@ -28,7 +28,8 @@ test.describe('TC-09 — Full banking journey', () => {
 
     await test.step('Register a fresh user and land on the overview', async () => {
       await parabank.register(user);
-      await parabank.expectLoggedIn();
+      await expect(page).toHaveURL(/overview\.htm/);
+      await expect(parabank.loggedInHeading()).toBeVisible();
       const accountIds = await parabank.accountIdsFromOverview();
       expect(accountIds.length).toBeGreaterThan(0);
       sourceAccountId = accountIds[0];
