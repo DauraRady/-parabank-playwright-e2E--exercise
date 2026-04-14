@@ -11,10 +11,6 @@ export type NewUser = {
   password: string;
 };
 
-/**
- * Generates a unique test user. Usernames collide on the shared ParaBank DB,
- * so we append a timestamp + random suffix. Every call returns a fresh identity.
- */
 export function newUser(): NewUser {
   const suffix = `${Date.now()}${Math.floor(Math.random() * 1_000)}`;
   return {
